@@ -185,26 +185,32 @@ label {
 
 /* A4 Sheet */
 .a4-sheet {
-    /* A4 dimensions: 210mm x 297mm */
+    /* Exact A4 size */
     width: 210mm;
     height: 297mm;
-    background-color: white;
-    box-shadow: var(--sheet-shadow);
+
+    /* Include padding inside height */
+    box-sizing: border-box;
+
+    /* Standard print margin */
     padding: 10mm;
-    /* Standard margin */
+
+    background-color: white;
+
+    /* Layout */
     display: flex;
-    /* Flex for gap-less filling */
     flex-wrap: wrap;
     align-content: flex-start;
-    gap: 0mm;
-    overflow: hidden;
-    position: relative;
-    transition: all 0.3s ease;
-    page-break-after: always;
-    /* Ensure new page in print */
-    break-after: page;
-}
 
+    /* Critical overflow control */
+    overflow: hidden;
+
+    /* Gap handled via CSS variable */
+    gap: var(--a4-gap, 0mm);
+
+    position: relative;
+}
+/* Landscape A4 override */
 .a4-sheet.landscape {
     width: 297mm;
     height: 210mm;
@@ -316,3 +322,4 @@ body.exporting .a4-sheet {
     page-break-after: auto !important;
     break-after: auto !important;
 }
+
