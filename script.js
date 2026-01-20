@@ -188,11 +188,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Handle PDF Download
-// Handle PDF Download (FIXED – multi-page safe)
+// Handle PDF Download (Fix 2 enabled)
 const downloadBtn = document.getElementById('download-btn');
 downloadBtn.addEventListener('click', () => {
+
+    // 🔹 Enable export mode
+    document.body.classList.add('exporting');
+
     const container = document.getElementById('sheets-container');
-    if (!container || container.children.length === 0) return;
+    if (!container || container.children.length === 0) {
+        document.body.classList.remove('exporting');
+        return;
+    }
 
     const isLandscape =
         document.querySelector('input[name="orientation"]:checked').value === 'landscape';
@@ -201,18 +208,27 @@ downloadBtn.addEventListener('click', () => {
         margin: 0,
         filename: 'photo-arrangement.pdf',
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true },
+        html2canvas: {
+            scale: 2,
+            useCORS: true,
+            scrollY: 0
+        },
         jsPDF: {
             unit: 'mm',
             format: 'a4',
             orientation: isLandscape ? 'landscape' : 'portrait'
-        }
+        },
+        pagebreak: { mode: ['avoid-all', 'css'] }
     };
 
     html2pdf()
         .set(opt)
         .from(container)
-        .save();
+        .save()
+        .then(() => {
+            // 🔹 Disable export mode
+            document.body.classList.remove('exporting');
+        });
 });
-});
+
 
