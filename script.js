@@ -188,33 +188,31 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Handle PDF Download
-    const downloadBtn = document.getElementById('download-btn');
-    downloadBtn.addEventListener('click', async () => {
-        const sheets = document.querySelectorAll('.a4-sheet');
-        if (sheets.length === 0) return;
+// Handle PDF Download (FIXED – multi-page safe)
+const downloadBtn = document.getElementById('download-btn');
+downloadBtn.addEventListener('click', () => {
+    const container = document.getElementById('sheets-container');
+    if (!container || container.children.length === 0) return;
 
-        const isLandscape = document.querySelector('input[name="orientation"]:checked').value === 'landscape';
-        const opt = {
-            margin: 0,
-            filename: 'photo-arrangement.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: isLandscape ? 'landscape' : 'portrait' }
-        };
+    const isLandscape =
+        document.querySelector('input[name="orientation"]:checked').value === 'landscape';
 
-        // Workflow: Create a worker with the first sheet
-        // Then loop through remaining sheets, adding a page and rendering them.
-        // Note: html2pdf.js chaining is: .from().toContainer().toCanvas().toPdf()...
-
-        const worker = html2pdf().set(opt).from(sheets[0]).toPdf(); // Start with first sheet
-
-        for (let i = 1; i < sheets.length; i++) {
-            // For subsequent sheets, we get the PDF object, adds a page, then renders the next element
-            worker.get('pdf').then(pdf => {
-                pdf.addPage();
-            }).from(sheets[i]).toContainer().toCanvas().toPdf();
+    const opt = {
+        margin: 0,
+        filename: 'photo-arrangement.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: {
+            unit: 'mm',
+            format: 'a4',
+            orientation: isLandscape ? 'landscape' : 'portrait'
         }
+    };
 
-        worker.save();
-    });
+    html2pdf()
+        .set(opt)
+        .from(container)
+        .save();
 });
+});
+
