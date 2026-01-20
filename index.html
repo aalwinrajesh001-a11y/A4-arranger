@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A4 Image Arranger</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <h1>A4 Arranger</h1>
+
+            <div class="control-group">
+                <label for="image-upload" class="upload-btn">
+                    <span>+ Upload Images</span>
+                    <input type="file" id="image-upload" multiple accept="image/*">
+                </label>
+            </div>
+
+            <div class="control-group">
+                <label>Sheet Orientation</label>
+                <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="orientation" value="portrait" checked>
+                        <span>Portrait</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="orientation" value="landscape">
+                        <span>Landscape</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label for="layout-select">Layout / Grid</label>
+                <select id="layout-select" class="select-input">
+                    <option value="auto">Auto (Fit All on 1 Page)</option>
+                    <option value="1">1 per page (Max Size)</option>
+                    <option value="2">2 per page</option>
+                    <option value="4">4 per page</option>
+                    <option value="6">6 per page</option>
+                    <option value="9">9 per page</option>
+                    <option value="12">12 per page</option>
+                    <option value="16">16 per page</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="gap-slider">Grid Gap</label>
+                <input type="range" id="gap-slider" min="0" max="50" value="0">
+                <div class="value-display"><span id="gap-value">0</span>mm</div>
+            </div>
+
+            <div class="control-group">
+                <label for="scale-slider">Image Scaling</label>
+                <input type="range" id="scale-slider" min="50" max="100" value="100">
+                <div class="value-display"><span id="scale-value">100</span>%</div>
+            </div>
+
+            <div class="control-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="fill-check" checked>
+                    <span>Crop to Fill Cells</span>
+                </label>
+            </div>
+
+            <div class="control-group">
+                <button id="clear-btn" class="secondary-btn">Clear All</button>
+            </div>
+
+            <div class="control-group">
+                <button id="download-btn" class="primary-btn" style="background-color: #059669;">Download PDF</button>
+                <button id="print-btn" class="secondary-btn" style="margin-top: 0.5rem;">Print Layout</button>
+            </div>
+
+            <div class="instructions">
+                <p>Images will automatically arrange to fill the A4 sheet grid.</p>
+            </div>
+        </aside>
+
+        <main class="preview-area">
+            <div id="sheets-container" class="sheets-container">
+                <!-- A4 Sheets will be injected here -->
+                <div class="empty-state">No images uploaded</div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

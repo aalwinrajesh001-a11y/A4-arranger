@@ -1,0 +1,310 @@
+:root {
+    --bg-color: #f3f4f6;
+    --sidebar-bg: #ffffff;
+    --text-color: #1f2937;
+    --accent-color: #4f46e5;
+    --accent-hover: #4338ca;
+    --border-color: #e5e7eb;
+    --sheet-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    height: 100vh;
+    overflow: hidden;
+}
+
+.app-container {
+    display: flex;
+    height: 100%;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 300px;
+    background-color: var(--sidebar-bg);
+    border-right: 1px solid var(--border-color);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.02);
+    z-index: 10;
+}
+
+.sidebar h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #4b5563;
+}
+
+.value-display {
+    font-size: 0.75rem;
+    color: #6b7280;
+    text-align: right;
+    margin-top: -0.25rem;
+}
+
+/* Radio Group */
+.radio-group {
+    display: flex;
+    gap: 1rem;
+    background: #f9fafb;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    border: 1px solid var(--border-color);
+}
+
+.radio-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+}
+
+.radio-label input {
+    accent-color: var(--accent-color);
+}
+
+.select-input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.375rem;
+    background-color: white;
+    color: var(--text-color);
+    font-size: 0.875rem;
+}
+
+.upload-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f9fafb;
+    border: 2px dashed var(--border-color);
+    border-radius: 0.5rem;
+    padding: 2rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    color: var(--accent-color);
+    font-weight: 500;
+}
+
+.upload-btn:hover {
+    border-color: var(--accent-color);
+    background-color: #eef2ff;
+}
+
+.upload-btn input {
+    display: none;
+}
+
+.primary-btn {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.primary-btn:hover {
+    background-color: var(--accent-hover);
+}
+
+.secondary-btn {
+    background-color: white;
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.secondary-btn:hover {
+    background-color: #f3f4f6;
+}
+
+.instructions {
+    margin-top: auto;
+    font-size: 0.75rem;
+    color: #9ca3af;
+    line-height: 1.4;
+}
+
+/* Preview Area */
+.preview-area {
+    flex: 1;
+    overflow: auto;
+    padding: 2rem;
+    /* Center horizontally and vertically */
+    background-color: var(--bg-color);
+    /* Center content if possible, but allow scrolling */
+}
+
+.sheets-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    min-height: 100%;
+}
+
+.empty-state {
+    color: #9ca3af;
+    margin-top: 4rem;
+    font-style: italic;
+}
+
+/* A4 Sheet */
+.a4-sheet {
+    /* A4 dimensions: 210mm x 297mm */
+    width: 210mm;
+    height: 297mm;
+    background-color: white;
+    box-shadow: var(--sheet-shadow);
+    padding: 10mm;
+    /* Standard margin */
+    display: flex;
+    /* Flex for gap-less filling */
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 0mm;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s ease;
+    page-break-after: always;
+    /* Ensure new page in print */
+    break-after: page;
+}
+
+.a4-sheet.landscape {
+    width: 297mm;
+    height: 210mm;
+}
+
+.img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    flex-grow: 0;
+    /* Do not expand to fill empty space, respect grid size */
+    box-sizing: border-box;
+    /* Include border/padding in size */
+
+    /* Calculate dimensions based on vars injected by JS */
+    /* width ≈ 100% / cols. Minus the gaps. 
+       (cols - 1) * gap / cols
+    */
+    --gap-spacing: calc((var(--cols) - 1) * var(--a4-gap, 0mm) / var(--cols));
+    width: calc(100% / var(--cols) - var(--gap-spacing));
+
+    --row-spacing: calc((var(--rows) - 1) * var(--a4-gap, 0mm) / var(--rows));
+    height: calc(100% / var(--rows) - var(--row-spacing));
+}
+
+/* Image Fit Modes */
+.img-container img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Default to fill */
+    transition: all 0.2s ease;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.checkbox-label input {
+    accent-color: var(--accent-color);
+    width: 1rem;
+    height: 1rem;
+}
+
+/* Print Styling */
+@media print {
+    @page {
+        size: A4;
+        margin: 0;
+    }
+
+    body {
+        background: none;
+        height: auto;
+        overflow: visible;
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    .app-container {
+        display: block;
+        height: auto;
+    }
+
+    .preview-area {
+        padding: 0;
+        overflow: visible;
+        background: none;
+        display: block;
+    }
+
+    .a4-sheet {
+        box-shadow: none;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        page-break-after: always;
+        break-after: page;
+    }
+}
+
+/* PDF Export helper styles */
+body.exporting .sheets-container {
+    gap: 0 !important;
+    /* Remove gap between sheets */
+}
+
+body.exporting .a4-sheet {
+    box-shadow: none !important;
+    margin: 0 !important;
+    /* Ensure page break is respected by html2pdf if it supports it,
+       though html2pdf usually splits slightly differently.
+       We rely on identical dimensions. */
+}
