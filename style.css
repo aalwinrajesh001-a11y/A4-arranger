@@ -307,4 +307,12 @@ body.exporting .a4-sheet {
     /* Ensure page break is respected by html2pdf if it supports it,
        though html2pdf usually splits slightly differently.
        We rely on identical dimensions. */
+
+}
+/* ================================
+   FIX 1: Disable page breaks during PDF export
+   ================================ */
+body.exporting .a4-sheet {
+    page-break-after: auto !important;
+    break-after: auto !important;
 }
